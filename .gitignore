@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Source data and generated experiment state
+data/raw/*
+!data/raw/README.md
+artifacts/*
+!artifacts/README.md
+reports/
+predictions/
+
+# Local packages and temporary exports
+*.zip
+*.tar.gz
+build/
+dist/
