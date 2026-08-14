@@ -1,0 +1,23 @@
+{
+  "model": "GMM",
+  "purpose": "Frozen best-Test-model inference demo",
+  "window_length": 200,
+  "stride": 10,
+  "input_channels": 18,
+  "feature_count": 144,
+  "feature_statistics": [
+    "mean",
+    "std",
+    "range",
+    "last_first_diff",
+    "mean_abs_diff",
+    "energy",
+    "crest_factor",
+    "smoothing_index"
+  ],
+  "threshold_source": "validation_frozen",
+  "test_pr_auc": 0.2941704401217953,
+  "test_f1": 0.402315484804631,
+  "test_event_f1": 0.4285714285714285,
+  "security": "Only load this repository-owned joblib file; never load untrusted pickle/joblib artifacts."
+}

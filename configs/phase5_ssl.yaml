@@ -1,0 +1,61 @@
+experiment:
+  name: phase5_contrastive_ssl
+  seed: 42
+  test_access: forbidden
+  deterministic: true
+
+data:
+  pretraining_split: train_only
+  labels_used_for_pretraining: false
+  window_length: 200
+  input_channels: 18
+  output_motors: 6
+  pretrain_batch_size: 128
+  finetune_batch_size: 64
+  num_workers: 0
+
+model:
+  cnn_channels: [32, 64]
+  cnn_kernels: [7, 5]
+  d_model: 64
+  n_heads: 4
+  n_layers: 2
+  dim_feedforward: 128
+  dropout: 0.2
+  pooling: avg_max
+  activation: gelu
+
+augmentations:
+  jitter_sigma: 0.02
+  scaling_sigma: 0.10
+  time_mask_ratio: 0.10
+
+contrastive:
+  loss: overlap_aware_nt_xent
+  temperature: 0.20
+  projection_hidden_dim: 128
+  projection_dim: 64
+  exclude_overlapping_same_run_negatives: true
+  optimizer: adamw
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  epochs: 30
+  gradient_clip_norm: 1.0
+
+finetuning:
+  initialization: ssl_encoder
+  loss: weighted_bce_with_logits
+  positive_weight_cap: 30.0
+  optimizer: adamw
+  learning_rate: 0.0005
+  weight_decay: 0.0001
+  max_epochs: 60
+  early_stopping_patience: 10
+  early_stopping_min_delta: 0.0001
+  early_stopping_metric: m6_validation_pr_auc
+  gradient_clip_norm: 1.0
+
+thresholds:
+  selection: hybrid_by_validation_support
+  no_positive_fallback: validation_normal_percentile_95
+  positive_supported_policy: validation_f1_optimal

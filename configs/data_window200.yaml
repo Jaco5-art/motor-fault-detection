@@ -1,0 +1,14 @@
+seed: 42
+motors: [1, 2, 3, 4, 5, 6]
+signals: [position, temperature, voltage]
+window:
+  length: 200
+  stride: 10
+  label_rule: any
+  min_fault_points: 1
+scaling:
+  type: per_channel_standard
+  fit_scope: train_raw_timesteps_only
+cleaning:
+  zscore_replacement: false
+  missing_value_policy: fail_fast

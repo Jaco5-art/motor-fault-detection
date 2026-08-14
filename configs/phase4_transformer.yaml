@@ -1,0 +1,51 @@
+experiment:
+  name: phase4_cnn_transformer
+  seed: 42
+  test_access: forbidden
+  deterministic: true
+
+data:
+  window_length: 200
+  input_channels: 18
+  output_motors: 6
+  batch_size: 64
+  num_workers: 0
+
+training:
+  initialization: from_scratch
+  loss: weighted_bce_with_logits
+  class_weight_scope: train_only_per_motor
+  positive_weight_cap: 30.0
+  optimizer: adamw
+  learning_rate: 0.0005
+  weight_decay: 0.0001
+  max_epochs: 60
+  early_stopping_patience: 10
+  early_stopping_min_delta: 0.0001
+  early_stopping_metric: m6_validation_pr_auc
+  gradient_clip_norm: 1.0
+  near_best_pr_auc_tolerance: 0.005
+  architecture_selection_rule: >-
+    Select the smallest candidate within 0.005 absolute M6 Validation PR-AUC
+    of the best candidate.
+
+thresholds:
+  selection: hybrid_by_validation_support
+  no_positive_fallback: validation_normal_percentile_95
+  positive_supported_policy: validation_f1_optimal
+
+shared_model:
+  cnn_channels: [32, 64]
+  cnn_kernels: [7, 5]
+  d_model: 64
+  n_heads: 4
+  dim_feedforward: 128
+  dropout: 0.2
+  pooling: avg_max
+  activation: gelu
+
+candidates:
+  transformer_1layer:
+    n_layers: 1
+  transformer_2layer:
+    n_layers: 2

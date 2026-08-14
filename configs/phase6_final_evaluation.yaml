@@ -1,0 +1,74 @@
+experiment:
+  name: phase6_single_frozen_test_evaluation
+  seed: 42
+  test_access: single_frozen_evaluation
+  allow_training: false
+  allow_threshold_selection: false
+
+protocol:
+  version: final_test_v1
+  primary_unit: overlapping_window
+  primary_aggregation: motor_window_micro
+  threshold_source: frozen_validation_checkpoint
+  point_adjustment: false
+  nonoverlap_diagnostic: greedy_earliest_per_run
+  event_definition: contiguous_raw_fault_points_within_window_coverage
+  predicted_event_definition: merged_overlapping_positive_window_intervals
+  event_matching: maximum_cardinality_one_to_one_interval_overlap
+
+data:
+  archive_sha256: 927e3ccfa55b14882e5c906ea3f89f906f48b5b108fc48c4733892ce9300ac33
+  window_length: 200
+  input_channels: 18
+  output_motors: 6
+  test_manifest:
+    path: artifacts/manifests/windows_test.csv
+    sha256: 89b52f223be05ee80df5c08c0a28ef62e5d7cc536cb8c3d4286f59a894c3ee6c
+  train_manifest:
+    path: artifacts/manifests/windows_train.csv
+    sha256: a5c16a5bb20480a3e7ed7658f0f3304a5f021369627a46be769dbe0c6e2aee22
+  validation_manifest:
+    path: artifacts/manifests/windows_validation.csv
+    sha256: 182aad7cae3ee0dfae8c7149d6b4ab8df46dbba19622c18de5461f77bc7148f2
+  raw_scaler:
+    path: artifacts/manifests/scaler_train_only.json
+    sha256: 400aefdf7eb2801613b44a65dbaadde7491361665c6fdf690d9d3119524a95dc
+  feature_scaler:
+    path: artifacts/experiments/_features/feature_scaler_train_only.json
+    sha256: 991e12bda1e0f02ef85c558f87f189e7264d8123b29903df7dcbf807fdc31345
+
+models:
+  - name: GMM
+    family: gmm
+    checkpoint:
+      path: artifacts/experiments/gmm_seed42/model.joblib
+      sha256: c05409be3f1d09a1934a6435a846a6e36f6c0ba0cb0a1846dd418133da2e73f7
+  - name: Isolation Forest
+    family: isolation_forest
+    checkpoint:
+      path: artifacts/experiments/isolation_forest_seed42/model.joblib
+      sha256: 074cda33add644f9e2771a44660b6603644ad54ad1a9d9305d6099e89b2afff3
+  - name: XGBoost
+    family: xgboost
+    checkpoint:
+      path: artifacts/experiments/xgboost_seed42/model.ubj
+      sha256: b424d3315653197f7f831c932590507ee46f2d5da04113b95530fa6a09526b61
+    calibrator:
+      path: artifacts/experiments/xgboost_seed42/score_calibrator.joblib
+      sha256: 527c8f43f8f47b73d7a7174e32e810d99313d58980d9e168646e0be2e11ab11e
+    validation_metrics: artifacts/experiments/xgboost_seed42/validation_metrics.json
+  - name: 1D-CNN
+    family: cnn
+    checkpoint:
+      path: artifacts/experiments/cnn_seed42/model.pt
+      sha256: 234a2d4f6d6555007570fd3423d41ad627d55f44b3d861f6827ad7c061048da4
+  - name: CNN + Transformer
+    family: cnn_transformer
+    checkpoint:
+      path: artifacts/experiments/cnn_transformer_seed42/model.pt
+      sha256: af950a0a5d3b42eb4f8eb4f356ee5b8f1220c1a4d553cbeff9250d34fc0b1877
+  - name: CNN + Transformer + SSL
+    family: cnn_transformer
+    checkpoint:
+      path: artifacts/experiments/cnn_transformer_ssl_seed42/model.pt
+      sha256: 19e4634d12f5c865b8ea5700b715bb496c51c0aa196279a5ad3a40566abf2fbb

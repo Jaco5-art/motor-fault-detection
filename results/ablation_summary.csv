@@ -1,0 +1,4 @@
+ablation,baseline,candidate,controlled_comparison,delta_pr_auc,delta_precision,delta_recall,delta_f1,relative_f1_change_percent
+"Handcrafted features vs raw sequence (pragmatic, model-confounded)",GMM,1D-CNN,False,-0.19781312707439008,-0.2245091956514697,0.3298245614035088,-0.19630310637845946,-48.7933260818401
+CNN vs CNN + Transformer,1D-CNN,CNN + Transformer,True,-0.008888664707910998,0.0011922826793843017,-0.4140350877192983,-0.0221594607603042,-10.756373442018907
+Without SSL vs with SSL,CNN + Transformer,CNN + Transformer + SSL,True,6.822579829689202e-05,-0.005925447101917697,0.03508771929824561,-0.003996802557953705,-2.1739130434782976

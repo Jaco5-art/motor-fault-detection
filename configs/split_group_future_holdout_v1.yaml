@@ -1,0 +1,43 @@
+name: group_future_holdout_v1
+frozen: true
+seed: 42
+group_key: run_id
+rationale: >-
+  Fixed group split with a strict future Test boundary. Test contains every labeled
+  run from 2024-04-26 onward, including the independent six-motor fault run.
+  Validation is drawn only from pre-Test history and includes one full-length normal
+  run plus both 2024-04-25 Motor 6 failure runs, providing normal and fault windows
+  for a shared validation threshold. Remaining historical runs form Train.
+threshold_policy: >-
+  Per-motor frozen thresholds: Validation F1-optimal where positives exist;
+  otherwise the 95th percentile of that motor's Validation normal scores.
+train:
+  - "20240105_164214"
+  - "20240105_165300"
+  - "20240105_165972"
+  - "20240320_152031"
+  - "20240320_153841"
+  - "20240320_155664"
+  - "20240325_135213"
+  - "20240325_152902"
+  - "20240325_155003"
+validation:
+  - "20240321_122650"
+  - "20240425_093699"
+  - "20240425_094425"
+test:
+  - "20240426_140055"
+  - "20240426_141190"
+  - "20240426_141532"
+  - "20240426_141602"
+  - "20240426_141726"
+  - "20240426_141938"
+  - "20240426_141980"
+  - "20240503_163963"
+  - "20240503_164435"
+  - "20240503_164675"
+  - "20240503_165189"
+known_limitations:
+  - Motors 1-5 have positive labels in only two runs, so all three splits cannot contain positives.
+  - Validation positives are Motor 6 only; F1-optimal thresholds for Motors 1-5 are invalid.
+  - Motors 1-5 therefore use a label-free Validation normal-score percentile threshold.

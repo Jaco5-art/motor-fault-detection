@@ -1,0 +1,1 @@
+"""Frozen GMM inference bundle."""

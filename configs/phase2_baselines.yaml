@@ -1,0 +1,49 @@
+experiment:
+  name: phase2_baselines
+  seed: 42
+  test_access: forbidden
+
+features:
+  statistics:
+    - mean
+    - std
+    - range
+    - last_first_diff
+    - mean_abs_diff
+    - energy
+    - crest_factor
+    - smoothing_index
+  scaling: train_only_standard
+
+thresholds:
+  selection: hybrid_by_validation_support
+  scope: per_motor_frozen
+  no_positive_fallback: validation_normal_percentile_95
+  positive_supported_policy: validation_f1_optimal
+  comparison:
+    - fixed_0.5
+    - per_motor_validation_percentile_95
+    - hybrid_support_aware
+
+gmm:
+  covariance_type: diag
+  n_init: 3
+  reg_covar: 1.0e-6
+  components: [1, 2, 4, 8]
+
+isolation_forest:
+  n_estimators: [200, 400]
+  max_features: [0.75, 1.0]
+  max_samples: auto
+
+xgboost:
+  num_boost_round: 1000
+  early_stopping_rounds: 50
+  max_depth: [3, 5]
+  learning_rate: [0.03, 0.07]
+  min_child_weight: 3
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_lambda: 1.0
+  reg_alpha: 0.0
+  nthread: 4
